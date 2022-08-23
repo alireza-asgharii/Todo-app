@@ -1,0 +1,32 @@
+.checkbox,
+.trash {
+  @media screen and (min-width: 660px) {
+    cursor: pointer;
+  }
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+  appearance: none;
+  background: #dfdfde;
+  border-radius: 6px;
+  transition: all ease 0.3s;
+  display: flex;
+
+  &:checked::before {
+    content: url("../assect/icons/done.png");
+    transition: all ease 0.3s;
+    width: 10px;
+    opacity: 0.8;
+  }
+}
+.trash {
+  font-size: 1.3rem;
+  opacity: 0.6;
+  transition: all ease .3s;
+
+  &:hover {
+    color: #FF1818;
+  }
+}
