@@ -15,8 +15,8 @@ import { theLargestNumber } from "./helper/function";
 const H6 = styled.h6`
   font-size: 1.4rem;
   padding-top: 120px;
-  opacity: .2;
-`
+  opacity: 0.2;
+`;
 
 export const TodosContext = createContext();
 
@@ -43,9 +43,9 @@ const reducer = (state, action) => {
       );
       state[findItemChange].task = action.payload.value;
       return [...state];
-    case 'GET_FROM_LOCAL':
-        state = [...action.payload.arr];
-        return [...state];
+    case "GET_FROM_LOCAL":
+      state = [...action.payload.arr];
+      return [...state];
     default:
       return state;
   }
@@ -54,15 +54,15 @@ const reducer = (state, action) => {
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [value, setValue] = useState("");
-
-
-  useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem('todos'));
-    dispatch({type: 'GET_FROM_LOCAL', payload: {arr: todos}})
-  }, [])
+  const [search, setSearch] = useState("");
+  console.log(state);
 
   useEffect(() => {
-    console.log(state);
+    const todos = JSON.parse(localStorage.getItem("todos"));
+    dispatch({ type: "GET_FROM_LOCAL", payload: { arr: todos } });
+  }, []);
+
+  useEffect(() => {
     window.localStorage.setItem("todos", JSON.stringify(state));
   }, [state]);
 
@@ -75,14 +75,25 @@ function App() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-  }
+  };
+
+  const filterTodos = state.filter((item) => item.task.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <TodosContext.Provider value={{ state, dispatch }}>
       <div className={styles.container}>
         <h1 className={styles.header}>Todo List</h1>
         <div className={styles.todosContainer}>
-          {state.map((item) => (
+          {filterTodos.length ? (
+            <input
+            placeholder="Search..."
+            type="search"
+            className={styles.seachInput}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          ) : ''}
+          {filterTodos.map((item) => (
             <Task todo={item} key={Math.random() * 100} />
           ))}
         </div>
@@ -98,7 +109,7 @@ function App() {
             <BsPlusLg className={styles.plusIcon} />
           </button>
         </form>
-      {!state.length && <H6>There is no task available :(</H6>}
+        {!state.length && <H6>There is no task available :(</H6>}
       </div>
     </TodosContext.Provider>
   );
