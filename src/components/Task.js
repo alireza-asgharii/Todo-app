@@ -12,7 +12,7 @@ import { TodosContext } from "../App";
 
 const DivContainer = styled.div`
   width: 100%;
-  background: #fff;
+  background: #f7f5f2;
   padding: 10px;
   border-radius: 10px;
   height: 35px;
@@ -20,8 +20,8 @@ const DivContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
-  opacity: ${(props) => (props.complete ? ".5" : "1")};
   transition: all linear .3s;
+  opacity: ${(props) => (props.complete ? ".5" : "1")};
 `;
 
 const Input = styled.input`
@@ -71,7 +71,7 @@ const Task = (props) => {
       <Input
         type="text"
         ref={input}
-        className={complete ? styles.completeShow : ''}
+        className={styles.inputText}
         onBlur={changeHandler}
         complete={complete}
       />

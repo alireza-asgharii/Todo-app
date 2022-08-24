@@ -84,7 +84,7 @@ function App() {
       <div className={styles.container}>
         <h1 className={styles.header}>Todo List</h1>
         <div className={styles.todosContainer}>
-          {filterTodos.length ? (
+          {state.length ? (
             <input
             placeholder="Search..."
             type="search"
