@@ -1,6 +1,8 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //icons
 import { BsPlusLg } from "react-icons/bs";
@@ -57,6 +59,17 @@ function App() {
   const [search, setSearch] = useState("");
   console.log(state);
 
+  const notify = () =>
+    toast.warn("Please enter something", {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
   useEffect(() => {
     const todos = JSON.parse(localStorage.getItem("todos"));
     dispatch({ type: "GET_FROM_LOCAL", payload: { arr: todos } });
@@ -70,6 +83,8 @@ function App() {
     if (value) {
       dispatch({ type: "ADD_TODO", payload: { value } });
       setValue("");
+    } else {
+      notify();
     }
   };
 
@@ -77,22 +92,27 @@ function App() {
     e.preventDefault();
   };
 
-  const filterTodos = state.filter((item) => item.task.toLowerCase().includes(search.toLowerCase()));
+  const filterTodos = state.filter((item) =>
+    item.task.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <TodosContext.Provider value={{ state, dispatch }}>
+      <ToastContainer />
       <div className={styles.container}>
         <h1 className={styles.header}>Todo List</h1>
         <div className={styles.todosContainer}>
           {state.length ? (
             <input
-            placeholder="Search..."
-            type="search"
-            className={styles.seachInput}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          ) : ''}
+              placeholder="Search..."
+              type="search"
+              className={styles.seachInput}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          ) : (
+            ""
+          )}
           {filterTodos.map((item) => (
             <Task todo={item} key={Math.random() * 100} />
           ))}
