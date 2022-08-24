@@ -85,3 +85,11 @@
   margin-bottom: 20px;
   background: #f7f5f2;
 }
+
+
+.notify {
+  @media screen and (max-width: 560px) {
+    width: 80%;
+    transform: translate(14%, 10%);
+  }
+}

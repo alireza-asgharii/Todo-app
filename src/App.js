@@ -98,7 +98,7 @@ function App() {
 
   return (
     <TodosContext.Provider value={{ state, dispatch }}>
-      <ToastContainer />
+        <ToastContainer className={styles.notify}  />
       <div className={styles.container}>
         <h1 className={styles.header}>Todo List</h1>
         <div className={styles.todosContainer}>
