@@ -15,11 +15,11 @@ const DivContainer = styled.div`
   background: #f7f5f2;
   padding: 10px;
   border-radius: 10px;
-  height: 35px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
+  margin-top: 12px;
   transition: all linear .2s;
   opacity: ${(props) => (props.complete ? ".5" : "1")};
 `;
