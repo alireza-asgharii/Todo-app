@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 //Styles
@@ -40,13 +40,6 @@ const Task = (props) => {
   const { dispatch } = useContext(TodosContext);
   const { task, complete, id } = props.todo;
 
-  const input = useRef();
-  const checkbox = useRef();
-
-  useEffect(() => {
-    input.current.value = task;
-    checkbox.current.checked = complete;
-  }, []);
 
   const completeHandler = () => {
     dispatch({ type: "COMPLETE", payload: { id, complete } });
@@ -64,16 +57,16 @@ const Task = (props) => {
     <DivContainer complete={complete}>
       <input
         type="checkbox"
-        ref={checkbox}
         className={styles.checkbox}
         onClick={completeHandler}
+        defaultChecked={complete}
       />
       <Input
         type="text"
-        ref={input}
         className={styles.inputText}
         onBlur={changeHandler}
         complete={complete}
+        defaultValue={task}
       />
       <FaRegTrashAlt className={styles.trash} onClick={deleteHandler} />
     </DivContainer>
