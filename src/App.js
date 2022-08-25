@@ -114,7 +114,7 @@ function App() {
             ""
           )}
           {filterTodos.map((item) => (
-            <Task todo={item} key={Math.random() * 100} />
+            <Task todo={item} key={item.id} />
           ))}
         </div>
         <form className={styles.buttonContainer} onSubmit={submitHandler}>

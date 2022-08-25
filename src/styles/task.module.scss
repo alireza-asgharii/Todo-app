@@ -18,10 +18,14 @@
   transition: all ease 0.3s;
   display: flex;
 
-  &:checked::before {
+  &::before {
     content: url("../assect/icons/done.png");
-    transition: all ease 0.3s;
+    transition: all ease 0.2s;
     width: 10px;
+    opacity: 0;
+  }
+
+  &:checked::before {
     opacity: 0.8;
   }
 }

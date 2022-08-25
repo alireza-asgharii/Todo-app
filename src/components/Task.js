@@ -20,7 +20,7 @@ const DivContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
-  transition: all linear .3s;
+  transition: all linear .2s;
   opacity: ${(props) => (props.complete ? ".5" : "1")};
 `;
 
