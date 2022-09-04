@@ -13,6 +13,7 @@ import styles from "./styles/app.module.scss";
 //Components
 import Task from "./components/Task";
 import { theLargestNumber } from "./helper/function";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 const H6 = styled.h6`
   font-size: 1.4rem;
@@ -57,7 +58,20 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [value, setValue] = useState("");
   const [search, setSearch] = useState("");
-  console.log(state);
+
+  // LocalStorage Hook
+  const [todos, setTodos] = useLocalStorage();
+  
+  useEffect(() => {
+    dispatch({ type: "GET_FROM_LOCAL", payload: { arr: todos } });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setTodos(state)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
+
 
   const notify = () =>
     toast.warn("Please enter something", {
@@ -69,15 +83,6 @@ function App() {
       draggable: true,
       progress: undefined,
     });
-
-  useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem("todos"));
-    dispatch({ type: "GET_FROM_LOCAL", payload: { arr: todos } });
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem("todos", JSON.stringify(state));
-  }, [state]);
 
   const addHandler = () => {
     if (value) {
@@ -98,7 +103,7 @@ function App() {
 
   return (
     <TodosContext.Provider value={{ state, dispatch }}>
-        <ToastContainer className={styles.notify}  />
+      <ToastContainer className={styles.notify} />
       <div className={styles.container}>
         <h1 className={styles.header}>Todo List</h1>
         <div className={styles.todosContainer}>
