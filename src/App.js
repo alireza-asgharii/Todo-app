@@ -1,8 +1,8 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { notify } from "./helper/notify";
 
 //icons
 import { BsPlusLg } from "react-icons/bs";
@@ -60,13 +60,12 @@ function App() {
   const [value, setValue] = useState("");
   const [search, setSearch] = useState("");
 
-  
   //save DarkMode to LocalStorage
-  const [isDark, setDark] = useLocalStorage('darkMode', false)
-  
+  const [isDark, setDark] = useLocalStorage("darkMode", false);
+
   // LocalStorage Hook
-  const [todos, setTodos] = useLocalStorage('todos', []);
-  
+  const [todos, setTodos] = useLocalStorage("todos", []);
+
   document.body.style.background = `${isDark ? "#222831" : "#dfdfde"}`;
 
   useEffect(() => {
@@ -79,23 +78,13 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
-  const notify = () =>
-    toast.warn("Please enter something", {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
+  
   const addHandler = () => {
     if (value) {
       dispatch({ type: "ADD_TODO", payload: { value } });
       setValue("");
     } else {
-      notify();
+      notify(isDark);
     }
   };
 
@@ -160,7 +149,7 @@ function App() {
           <button
             onClick={addHandler}
             className={isDark ? styles.inputDarkMode : undefined}
-            style={{ boxShadow: `${isDark && "none" }` }}
+            style={{ boxShadow: `${isDark && "none"}` }}
           >
             <BsPlusLg className={styles.plusIcon} />
           </button>
