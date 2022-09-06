@@ -19,6 +19,7 @@ const H6 = styled.h6`
   font-size: 1.4rem;
   padding-top: 120px;
   opacity: 0.2;
+  color: ${(props) => (props.isDark ? "#fff" : "#333")};
 `;
 
 export const TodosContext = createContext();
@@ -59,19 +60,24 @@ function App() {
   const [value, setValue] = useState("");
   const [search, setSearch] = useState("");
 
-  // LocalStorage Hook
-  const [todos, setTodos] = useLocalStorage();
   
+  //save DarkMode to LocalStorage
+  const [isDark, setDark] = useLocalStorage('darkMode', false)
+  
+  // LocalStorage Hook
+  const [todos, setTodos] = useLocalStorage('todos', []);
+  
+  document.body.style.background = `${isDark ? "#222831" : "#dfdfde"}`;
+
   useEffect(() => {
     dispatch({ type: "GET_FROM_LOCAL", payload: { arr: todos } });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    setTodos(state)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state])
-
+    setTodos(state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   const notify = () =>
     toast.warn("Please enter something", {
@@ -101,17 +107,36 @@ function App() {
     item.task.toLowerCase().includes(search.toLowerCase())
   );
 
+  const isDarkHandler = (e) => {
+    setDark(e.target.checked);
+  };
+
   return (
     <TodosContext.Provider value={{ state, dispatch }}>
       <ToastContainer className={styles.notify} />
       <div className={styles.container}>
-        <h1 className={styles.header}>Todo List</h1>
+        <section className={styles.topSection}>
+          <div className={styles.toggleDarkMode}>
+            <label className={styles.switch}>
+              <input
+                type="checkbox"
+                checked={isDark}
+                onChange={isDarkHandler}
+              />
+              <span className={`${styles.slider} ${styles.round}`}></span>
+            </label>
+          </div>
+          <h1 className={isDark ? styles.headerDarkMode : styles.header}>
+            Todo List
+          </h1>
+        </section>
+
         <div className={styles.todosContainer}>
           {state.length ? (
             <input
               placeholder="Search..."
               type="search"
-              className={styles.seachInput}
+              className={isDark ? styles.seachInputDarkMode : styles.seachInput}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -119,7 +144,7 @@ function App() {
             ""
           )}
           {filterTodos.map((item) => (
-            <Task todo={item} key={item.id} />
+            <Task todo={item} key={item.id} isDark={isDark} />
           ))}
         </div>
         <form className={styles.buttonContainer} onSubmit={submitHandler}>
@@ -129,12 +154,20 @@ function App() {
             type="text"
             placeholder="write a new Task..."
             autoFocus
+            className={isDark ? styles.inputDarkMode : undefined}
+            style={{ boxShadow: `${isDark && "none"}` }}
           />
-          <button onClick={addHandler}>
+          <button
+            onClick={addHandler}
+            className={isDark ? styles.inputDarkMode : undefined}
+            style={{ boxShadow: `${isDark && "none" }` }}
+          >
             <BsPlusLg className={styles.plusIcon} />
           </button>
         </form>
-        {!state.length && <H6>There is no task available :(</H6>}
+        {!state.length && (
+          <H6 isDark={isDark}>There is no task available :(</H6>
+        )}
       </div>
     </TodosContext.Provider>
   );
